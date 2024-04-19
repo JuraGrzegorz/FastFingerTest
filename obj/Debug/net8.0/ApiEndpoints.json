@@ -1,0 +1,28 @@
+[
+  {
+    "ContainingType": "FastFingerTest.Controllers.ValuesController",
+    "Method": "SaveAttend",
+    "RelativePath": "api/SaveAttend",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "FastFingerTest.Controllers.ValuesController",
+    "Method": "SaveScore",
+    "RelativePath": "api/SaveScore",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "scoreData",
+        "Type": "FastFingerTest.Dto.ScoreData",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

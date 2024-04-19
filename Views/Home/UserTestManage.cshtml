@@ -1,0 +1,45 @@
+﻿@using FastFingerTest.Dto
+@using FastFingerTest.Services
+@model List<UserTestManageDto>
+@inject LanguageService _localization
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    @_localization.Getkey("yourTests")
+                    <a class="btn btn-primary float-end" asp-controller="Home" asp-action="CreateTest">Stwórz test</a>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">@_localization.Getkey("UserTestsTestName")</th>
+                                <th scope="col"> @_localization.Getkey("UserTestsTime")</th>
+                                <th scope="col">@_localization.Getkey("UserTestsMaxPoints")</th>
+                                <th scope="col">@_localization.Getkey("UserTestsCreationDate")</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var test in Model)
+                            {
+                                <tr>
+                                    <td>@test.Name</td>
+                                    <td>@test.Lenght</td>
+                                    <td>@test.MaxPoints</td>
+                                    <td>@test.CreationDate.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        <a asp-controller="Home" asp-action="TestDel" asp-route-id="@test.Id" class="btn btn-outline-dark  float-end">Usuń</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

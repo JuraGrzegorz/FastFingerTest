@@ -1,0 +1,225 @@
+﻿@using FastFingerTest.Dto
+@using FastFingerTest.Services
+@model startPageDto
+@inject LanguageService _localization
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <div class="py-3">
+        <span >TYPING SPEED TEST</span>
+    </div>
+   
+    <h1 class="display-2 py-3">Test your typing skills</h1>
+    <div class="py-5" >
+        <div class="timer-frame">
+            <div class="stats-item-frame">
+                <span class="timer">@Model.Length</span>
+                <span class="stats-info">@_localization.Getkey("sec")</span>
+             </div>
+        </div>
+        
+        <div class="stats-frame">
+            <div class="stats-item-frame">
+                <span class="stats" id="words">0</span>
+                <span class="stats-info">@_localization.Getkey("words")</span>
+            </div>
+            
+        </div>
+        <div class="stats-frame">
+            <div class="stats-item-frame">
+                <span class="stats" id="chars">0</span>
+                <span class="stats-info">@_localization.Getkey("chars")</span>
+            </div>
+            
+        </div>
+        <div class="stats-frame">
+            <div class="stats-item-frame">
+                <span class="stats" id="accuracy">0</span>
+                <span class="stats-info">@_localization.Getkey("accuracy")</span>
+            </div>
+        </>
+        
+    </div>
+
+
+  
+    <div class="py-3">
+        <div class="words-frame">
+            <div class="words-conteiner">
+                @foreach (var x in Model.Words)
+                {
+                    <span>@x</span>
+                }
+            </div>
+        </div>
+    </div>
+  
+    <input type="text" oninput="checkSpelling()" />
+  
+   
+    
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" onclick="Reloud()" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="resultWindow">
+                    Well... You type with the speed of 0 WPM (0 CPM). Your accuracy was 0%..It could be better!
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-outline-dark" onclick="Reloud()">Try again</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="SaveScore()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+
+    const spans = document.querySelectorAll('.words-conteiner span');
+    const output = document.querySelector('.text-center input');
+    const timer = document.querySelector('.timer');
+    const words = document.getElementById('words');
+    const char = document.getElementById("chars");
+    const accuracy = document.getElementById("accuracy")
+    var resultWindow = document.getElementById("resultWindow");
+
+
+
+    let wordPosition = 0;
+    let points = 0;
+    let chars=0;
+    let mistakes = 0;
+    let time = @Model.Length;
+    let timerInicialised = false;
+    let countdown;
+
+    function updateTime() {
+
+        time = time - 1;
+        timer.textContent = time;
+        if (time == 0) {
+            let accuracyValue = points / (mistakes + points);
+                resultWindow.innerHTML = " Well... You type with the speed of " + points + " WPM (0 CPM). Your accuracy was" + accuracyValue.toFixed(2) + "..It could be better!" + points;
+            clearInterval(countdown);
+            openModal();
+            saveReslut();
+        }
+    }
+    function Reloud() {
+        window.location.reload();
+    }
+    
+    function SaveScore(){
+        var url = 'https://localhost:7053/api/SaveScore';
+        var data = { id: "@Model.Id", Points: points, MaxPoints: @Model.MaxPoints};
+        var options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+        fetch(url, options)
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        var newWindow = window.open('https://localhost:7053/Identity/Account/Login', '_blank');
+                        if (newWindow) {
+                            newWindow.focus();
+                        } else {
+                            alert('Twoja przeglądarka blokuje otwieranie nowych okien. Spróbuj zmienić ustawienia.');
+                        }
+                        return;
+                    }
+                }
+                window.location.reload();
+            })
+    }
+    
+
+    function openModal() {
+        var myModal = document.getElementById('staticBackdrop');
+        var modal = new bootstrap.Modal(myModal);
+
+        modal.show();
+    }
+
+    function saveReslut(){
+            var url = 'https://localhost:7053/api/SaveAttend';
+            var options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify()
+            };
+        fetch(url, options);
+    }
+    function checkSpelling() {
+        if (!timerInicialised) {
+            countdown = setInterval(updateTime, 1000);
+            timerInicialised = true;
+        }
+
+
+        var spanText = spans[wordPosition].textContent;
+
+        if (output.value[output.value.length - 1] == " ") {
+
+            spans[wordPosition].style.display = 'none';
+            wordPosition += 1;
+            let tmp = 0;
+            if (spanText.length == output.value.length - 1) {
+                var i;
+                for (i = 0; i < output.value.length - 1; i++) {
+                    if (output.value[i] !== spanText[i]) {
+                        break;
+                    }
+                }
+
+                if (i == spanText.length) {
+                        tmp = 1;
+                    points += 1;
+                    chars += spanText.length;
+                    words.textContent = points;
+                    char.textContent = chars;
+                    let accuracyValue = points / (mistakes + points);
+                    accuracy.textContent = accuracyValue.toFixed(2);
+                }
+            }
+            if (tmp != 1) {
+                mistakes++;
+                accuracy.textContent = points / (mistakes + points);
+                let accuracyValue = points / (mistakes + points);
+                accuracy.textContent = accuracyValue.toFixed(2);
+            }
+            output.value = "";
+
+        }
+
+        var error = false;
+
+        for (var i = 0; i < output.value.length; i++) {
+
+            if (output.value[i] !== spanText[i]) {
+                error = true;
+
+                break;
+            }
+        }
+        if (error) {
+            spans[wordPosition].style.backgroundColor = 'red';
+        } else {
+            spans[wordPosition].style.backgroundColor = '#cccccc';
+        }
+    }
+
+
+   
+</script>

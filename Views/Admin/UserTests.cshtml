@@ -1,0 +1,22 @@
+﻿@using FastFingerTest.Dto
+@model List<AdminUserTestsDto>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nazwa Testu</th>
+            <th>Data Utworzenia</th>
+            <th>Suma Podejść</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var test in Model)
+        {
+            <tr>
+                <td>@test.Name</td>
+                <td>@test.CreationDate.ToShortDateString()</td>
+                <td>@test.SumOfTests</td>
+            </tr>
+        }
+    </tbody>
+</table>

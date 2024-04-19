@@ -1,0 +1,23 @@
+﻿@using FastFingerTest.Dto
+@using FastFingerTest.Services
+@model List<SelectTestResultDto>
+@inject LanguageService _localization
+<table class="table">
+    <thead>
+        <tr>
+            <th>@_localization.Getkey("UserTestsUserName")</th>
+            <th>@_localization.Getkey("score")</th>
+            <th>@_localization.Getkey("Result Time")</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var result in Model)
+        {
+            <tr>
+                <td>@result.UserNick</td>
+                <td>@result.Score</td>
+                <td>@result.ResultTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+            </tr>
+        }
+    </tbody>
+</table>

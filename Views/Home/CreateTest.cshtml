@@ -1,0 +1,69 @@
+﻿@using FastFingerTest.Dto
+@model CreateTestDto
+
+
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+     <div class="modal-dialog">
+         <div class="modal-content bg-success bg-gradient text-white">
+             <div class="modal-body">
+                <h5 class="modal-title text-center" id="successModalLabel">Success!</h5>
+             </div>
+         </div>
+     </div>
+</div>
+
+<div class="container mt-5">
+    <h1>Create your own Test</h1>
+    <form method="post" asp-action="CreateTest" enctype="multipart/form-data">
+        
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Name:</label>
+            <span asp-validation-for="Name" class="text-danger"></span>
+            <input asp-for="Name" class="form-control" placeholder="Enter name">
+        </div>
+        <div class="mb-3 row">
+            <div class="col-md-6">
+                <label asp-for="Length" class="form-label">Time:</label>
+                <span asp-validation-for="Length" class="text-danger"></span>
+                <input asp-for="Length" class="form-control" placeholder="Enter time">
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Separator" class="form-label">Separators:</label>
+                <span asp-validation-for="Separator" class="text-danger"></span>
+                <select asp-for="Separator" class="form-select">
+                    <option value="@(SeparatorType.Space)">Space</option>
+                    <option value="@(SeparatorType.Comma)">Comma (,)</option>
+                    <option value="@(SeparatorType.Semicolon)">Semicolon (;)</option>
+                    <option value="@(SeparatorType.VerticalBar)">Vertical Bar (|)</option>
+                </select>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label asp-for="File" class="form-label">Select File:</label>
+            <span asp-validation-for="File" class="text-danger"></span>
+            <input asp-for="File" type="file" class="form-control" accept=".txt">
+            <small id="fileHelp" class="form-text text-muted">Allowed formats: txt</small>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Stwórz</button>
+        </div>
+    </form>
+</div>
+
+
+
+<script>
+    function openModal() {
+        var myModal = document.getElementById('successModal');
+        var modal = new bootstrap.Modal(myModal);
+        modal.show();
+    }
+
+    
+    window.onload = function () {
+        var successModal = @Html.Raw(ViewBag.SuccessModal)
+        if (successModal) {
+            openModal();
+        }
+    };
+</script>

@@ -1,0 +1,30 @@
+.stats-container[b-axvf5f38qd] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.stat-item[b-axvf5f38qd] {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: calc(50% - 10px);
+    margin-bottom: 10px;
+}
+
+.stat-value[b-axvf5f38qd] {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.stat-label[b-axvf5f38qd] {
+    font-size: 16px;
+    color: #666;
+}
+
+.canvas-frame[b-axvf5f38qd]{
+    width:70%;
+    margin:auto;
+}

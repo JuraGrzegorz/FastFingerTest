@@ -1,0 +1,15 @@
+﻿@using FastFingerTest.Dto
+@model CreateTestDto
+
+<h3>Wprowadz nowy plik danych do podstawowych testow</h3>
+<form method="post" asp-action="Upload" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label asp-for="File" class="form-label">Select File:</label>
+        <span asp-validation-for="File" class="text-danger"></span>
+        <input asp-for="File" type="file" class="form-control" accept=".txt">
+        <small id="fileHelp" class="form-text text-muted">Allowed formats: txt</small>
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Stwórz</button>
+    </div>
+</form>

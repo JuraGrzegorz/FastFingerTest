@@ -1,0 +1,37 @@
+﻿@using FastFingerTest.Dto
+@model List<AdminUsersDto>
+
+
+<div>
+    <form method="get">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Wyszukaj użytkownika..." name="searchString">
+            <button type="submit" class="btn btn-primary">Szukaj</button>
+        </div>
+    </form>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Name</td>
+                <td class="d-flex justify-content-center">
+                    <form asp-controller="Admin" asp-action="DeleteUser" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć użytkownika?');">
+                        <input type="hidden" name="userId" value="@user.Id" />
+                        <button type="submit" class="btn btn-danger">Usuń</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

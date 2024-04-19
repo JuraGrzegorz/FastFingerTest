@@ -1,0 +1,74 @@
+﻿@using FastFingerTest.Dto
+@model AdminDataDto
+
+<div class="stats-container">
+    <div class="stat-item">
+        <div class="stat-value">@Model.SumRegisterUsers</div>
+        <div class="stat-label">Zarejestrowani użytkownicy</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value">@Model.SumTestsResult</div>
+        <div class="stat-label">Wyniki testów</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value">@Model.TodayCreatedTests</div>
+        <div class="stat-label">Dzisiejsze utworzone testy</div>
+    </div>
+    <div class="stat-item">
+        <div class="stat-value">@Model.TodayFinishTests</div>
+        <div class="stat-label">Dzisiejsze zakończone testy</div>
+    </div>
+</div>
+<h2>Liczba podejść do testów dla każdego dnia w miesiącu</h2>
+<div class="canvas-frame">
+    <canvas id="testsAttendsChart" style="width:200px;"></canvas>
+</div>
+
+
+<script>
+    var ctx = document.getElementById('testsAttendsChart').getContext('2d');
+    var testsAttendsChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [
+    @foreach (var item in Model.TestsAttends)
+    {
+        @Html.Raw(Json.Serialize(item.Date.ToString("yyyy-MM-dd"))) <text>, </text>
+    }
+                    ],
+            datasets: [{
+                label: 'Liczba podejść',
+                data: [
+    @foreach (var item in Model.TestsAttends)
+    {
+        @Html.Raw(Json.Serialize(item.attends)) <text>, </text>
+    }
+                        ],
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                        displayFormats: {
+                            day: 'MMM D'
+                        }
+                    },
+                    ticks: {
+                        source: 'auto'
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>

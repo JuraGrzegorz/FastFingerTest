@@ -1,0 +1,44 @@
+﻿@using FastFingerTest.Dto
+@model List<SelectWritingTestDto>
+
+<select id="selectTest" class="form-select" aria-label="Select Test">
+    <option value="">standard</option>
+    @foreach (var result in Model)
+    {
+        <option value="@result.Id">@result.Name</option>
+    }
+</select>
+
+<div id="testResults">
+    
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        
+        var writingTestId = $('#selectTest').val();
+
+        var updateTestResults = function (writingTestId) {
+            $.ajax({
+                url: '/Home/TestResults',
+                type: 'GET',
+                data: { writingTestId: writingTestId },
+                success: function (data) {
+                    $('#testResults').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        };
+
+        updateTestResults(writingTestId);
+
+        $('#selectTest').change(function () {
+            var writingTestId = $(this).val();
+            updateTestResults(writingTestId);
+        });
+    });
+</script>

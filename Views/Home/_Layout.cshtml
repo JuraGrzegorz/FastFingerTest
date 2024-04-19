@@ -1,0 +1,48 @@
+﻿@using FastFingerTest.Services
+@inject LanguageService _localization
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="container-fluid no-padding">
+    <div class="row flex-nowrap">
+        <div class="col-auto px-0">
+            <div class="d-flex flex-column align-items-center align-items-sm-start text-white">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a asp-controller="Home" asp-action="Index" asp-route-id="" class="text-dark text-decoration-none">
+                            <i class="bi bi-caret-right-fill"></i> <span class="ms-1 d-none d-sm-inline">@_localization.Getkey("wrtTest")</span>
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="text-dark text-decoration-none" asp-controller="Home" asp-action="UsersTests">
+                            <i class="bi bi-arrow-bar-right"></i> <span class="ms-1 d-none d-sm-inline">@_localization.Getkey("usrTests")</span>
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="text-dark text-decoration-none" asp-controller="Home" asp-action="UserTestManage">
+                            <i class="bi bi-gear"></i> <span class="ms-1 d-none d-sm-inline">@_localization.Getkey("yourTests")</span>
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a asp-controller="Home" asp-action="BestPlayers" class="text-dark text-decoration-none">
+                            <i class="bi bi-bar-chart-fill"></i> <span class="ms-1 d-none d-sm-inline">@_localization.Getkey("bestPlayers")</span>
+                        </a>
+                    </li>
+                    @if (@User.IsInRole("Admin"))
+                    {
+                        <li class="list-group-item">
+                            <a asp-controller="Admin" asp-action="index" class="text-dark text-decoration-none">
+                                <i class="fas fa-user"></i> <span class="ms-1 d-none d-sm-inline">Manage</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="col">   
+            @RenderBody()
+        </div>
+    </div>
+</div>

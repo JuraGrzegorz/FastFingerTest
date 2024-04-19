@@ -1,0 +1,44 @@
+﻿@using FastFingerTest.Dto
+@using FastFingerTest.Services
+@model List<ShowUserTestDto>
+@inject LanguageService _localization
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    @_localization.Getkey("UserTestsHeader")
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">@_localization.Getkey("UserTestsUserName")</th>
+                                <th scope="col">@_localization.Getkey("UserTestsTestName")</th>
+                                <th scope="col">@_localization.Getkey("UserTestsTime")</th>
+                                <th scope="col">@_localization.Getkey("UserTestsMaxPoints")</th>
+                                <th scope="col">@_localization.Getkey("UserTestsCreationDate")</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var test in Model)
+                            {
+                                <tr>
+                                    <td>@test.UserName</td>
+                                    <td>@test.TestName</td>
+                                    <td>@test.TestLength</td>
+                                    <td>@test.MaxPoints</td>
+                                    <td>@test.TestCreationDate.ToString("yyyy-MM-dd")</td>
+                                    <td>
+                                        <a asp-controller="Home" asp-action="UserTest" asp-route-id="@test.TestId" class="btn btn-primary btn-sm float-end">@_localization.Getkey("UserTestsJoinButton")</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
